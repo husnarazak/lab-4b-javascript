@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Information</title>
+</head>
+<body>
+    <h1>Books Information</h1>
+
+    <div id="bookDetails">
+        <p>Loading books...</p>
+    </div>
+
+    <script>
+        fetch("books.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Unable to load books.json");
+                }
+                return response.json();
+            })
+            .then(books => {
+                const bookDetails = document.getElementById("bookDetails");
+                bookDetails.textContent = "";
+
+                const title = document.createElement("p");
+                title.textContent = "Title of the first book: " + books[0].title;
+                bookDetails.appendChild(title);
+
+                const author = document.createElement("p");
+                author.textContent = "Author of the second book: " + books[1].author;
+                bookDetails.appendChild(author);
+
+                books.forEach(book => {
+                    const genre = document.createElement("p");
+                    genre.textContent = book.title + " — " + book.genres.join(", ");
+                    bookDetails.appendChild(genre);
+                });
+            })
+            .catch(error => {
+                document.getElementById("bookDetails").textContent =
+                    "Sorry, the books could not be loaded. Please check books.json and try again.";
+            });
+    </script>
+</body>
+</html>
